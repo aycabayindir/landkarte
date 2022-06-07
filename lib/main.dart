@@ -103,19 +103,33 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: GoogleMap(
-        mapType: MapType.satellite,
-        markers:  {_kTDBBMarker, _kSozialWS, _kZentrumFS, _kKantineNr1,
-          _kMensa, _kALUAM, _kAllianz, _kFakultaeten, _kDorm } ,
-        initialCameraPosition: _kCampus,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      appBar: AppBar(title: Text('Türkische-Deutsche Universität Campus'),
+          backgroundColor: Colors.black12,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToKarte,
-        label: Text('Karte'),
-        icon: Icon(Icons.map_sharp),
+      body: SafeArea(
+        child :GoogleMap(
+          mapType: MapType.satellite,
+          markers:  {_kTDBBMarker, _kSozialWS, _kZentrumFS, _kKantineNr1,
+            _kMensa, _kALUAM, _kAllianz, _kFakultaeten, _kDorm } ,
+          initialCameraPosition: _kCampus,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.map_sharp),
+        onPressed: ()async{
+          GoogleMapController controller = await _controller.future;
+          controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(41.1419984, 29.1021187),
+            zoom: 16.55
+            )
+          ));
+          setState(() {
+
+          });
+        },
       ),
     );
   }
